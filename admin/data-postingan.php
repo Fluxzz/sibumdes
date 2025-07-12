@@ -30,7 +30,7 @@ include "login/ceksession.php";
             </div>
             <div class="title_right">
               <div class="pull-right">
-                <a href="tambah_postingan.php" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Tambah Postingan</a>
+                <a href="tambah-postingan.php" class="btn btn-primary btn-sm"><i class="fa fa-plus"></i> Tambah Postingan</a>
               </div>
             </div>
           </div>

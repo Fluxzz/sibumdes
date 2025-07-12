@@ -31,22 +31,22 @@ $data = mysqli_fetch_array($query);
         <h3>Kategori</h3>
         <ul class="nav side-menu">
           <!-- Item untuk Buat Surat -->
-          <li><a href="inputbuatsurat.php"><i class="fa fa-plus-square"></i> Buat Surat </a></li>
           <!-- Kategori Surat -->
           <li><a><i class="fa fa-file-text"></i> Kategori Surat <span class="fa fa-chevron-down"></span></a>
-            <ul class="nav child_menu">
-              <li><a href="datasuratmasuk.php"><i class="fa fa-inbox"></i> Arsip Surat Masuk</a></li>
-              <li><a href="datasuratkeluar.php"><i class="fa fa-send"></i> Arsip Surat Keluar</a></li>
-            </ul>
+          <ul class="nav child_menu">
+            <li><a href="datasuratmasuk.php"><i class="fa fa-inbox"></i> Arsip Surat Masuk</a></li>
+            <li><a href="datasuratkeluar.php"><i class="fa fa-send"></i> Arsip Surat Keluar</a></li>
+          </ul>
+          <li><a href="inputbuatsurat.php"><i class="fa fa-plus-square"></i> Buat Surat </a></li>
           </li>
           <!-- Bagian -->
           <li><a><i class="fa fa-users"></i> Arsip Postingan <span class="fa fa-chevron-down"></span></a>
-            <ul class="nav child_menu">
-              <li><a href="tambah-postingan.php"><i class="fa fa-inbox"></i> Tambah Postingan</a></li>
-              <li><a href="data-postingan.php"><i class="fa fa-inbox"></i> Daftar Postingan</a></li>
-
-            </ul>
-          </li>
+          <ul class="nav child_menu">
+            <li><a href="data-postingan.php"><i class="fa fa-inbox"></i> Daftar Postingan</a></li>
+            
+          </ul>
+        </li>
+        <li><a href="tambah-postingan.php"><i class="fa fa-plus-square"></i> Tambah Postingan</a></li>
         </ul>
       </div>
     </div>
