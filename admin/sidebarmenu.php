@@ -40,12 +40,11 @@ $data = mysqli_fetch_array($query);
             </ul>
           </li>
           <!-- Bagian -->
-          <li><a><i class="fa fa-users"></i> Kategori Data <span class="fa fa-chevron-down"></span></a>
+          <li><a><i class="fa fa-users"></i> Arsip Postingan <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
-              <li><a href="datamitra.php"><i class="fa fa-inbox"></i> Data Mitra</a></li>
-              <li><a href="datapengunjung.php"><i class="fa fa-inbox"></i> Data Pengunjung</a></li>
-              <li><a href="datapenjualanusaha.php"><i class="fa fa-inbox"></i> Data Penjualan Usaha</a></li>
-              <li><a href="datapengurus.php"><i class="fa fa-users"></i> Data Pengurus</a></li>
+              <li><a href="tambah-postingan.php"><i class="fa fa-inbox"></i> Tambah Postingan</a></li>
+              <li><a href="data-postingan.php"><i class="fa fa-inbox"></i> Daftar Postingan</a></li>
+
             </ul>
           </li>
         </ul>
