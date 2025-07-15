@@ -53,8 +53,8 @@
 
               <div class="separator">
                 <div>
-                  <h2><i class="fa fa-institution"></i>SIBUMDES</h2>
-                  <p copy&>VURIKO DEV STUDIO</p>
+                  <h2><i class="fa fa-institution"></i>DESA WISATA CANDIREJO</h2>
+                  <p>Tim Pengabdian DRTPM UNNES. All Right Reserved</p>
                 </div>
               </div>
             </form>
