@@ -45,7 +45,7 @@
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
               </div>
               <div>
-                <a href="../../index.php"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span> Kembali</button></a>
+                <a href="../login/index.php"><button type="button" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span> Kembali</button></a>
                 <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-lock"></span> Masuk</button>
               </div>
 
