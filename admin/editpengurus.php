@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "login/ceksession.php";
+
 include '../koneksi/koneksi.php';
 ob_start();
 

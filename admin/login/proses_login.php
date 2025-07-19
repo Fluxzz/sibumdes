@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../koneksi/koneksi.php';
+include '/sibumdes/koneksi/koneksi.php';
 
 // Ambil data username dan password dari form
 $username = mysqli_real_escape_string($db, $_POST['username_admin']);

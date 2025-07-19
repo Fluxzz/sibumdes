@@ -1,5 +1,5 @@
 <?php 
-include '../koneksi/koneksi.php';
+include "/sibumdes/koneksi/koneksi.php";
 $sql  		= "SELECT * FROM tb_admin where id_admin='".$_SESSION['id']."'";                        
 $query  	= mysqli_query($db, $sql);
 $data 		= mysqli_fetch_array($query);

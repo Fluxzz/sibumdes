@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "../koneksi/koneksi.php";
+include "/sibumdes/koneksi/koneksi.php";
 
 if (!isset($_GET['id'])) {
     header("Location: ../data_postingan.php");

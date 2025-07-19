@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <?php
 session_start();
-include "login/ceksession.php";
 ?>
 <html lang="en">
   <head>
