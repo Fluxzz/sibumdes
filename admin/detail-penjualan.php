@@ -12,7 +12,7 @@ include "login/ceksession.php";
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Arsip Surat Desa Candirejo Borobudur </title>
+  <title>Arsip Surat Desa Candirejo Borobudur</title>
 
   <!-- Bootstrap -->
   <link href="../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -63,7 +63,7 @@ include "login/ceksession.php";
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Surat Keluar</h3>
+              <h3>Data Penjualan Usaha</h3>
             </div>
           </div>
 
@@ -73,19 +73,19 @@ include "login/ceksession.php";
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Surat Masuk ><small>Detail Surat Masuk</small></h2>
+                  <h2>Data Penjualan Usaha><small>Detail Surat Masuk</small></h2>
                   <div class="clearfix"></div>
                 </div>
                 <?php include '../koneksi/koneksi.php';
                      $id			= mysqli_real_escape_string($db,$_GET['id']);
-                     $sql  		= "SELECT * FROM tb_arsip_surat_keluar where No='".$id."'";                        
+                     $sql  		= "SELECT * FROM tb_data_penjualan_usaha where id='".$id."'";                        
                      $query  	= mysqli_query($db, $sql);
                      $data 		= mysqli_fetch_array($query);?>
                 <div class="x_content">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="profile_title">
                       <div class="col-md-6">
-                        <h2>Detail Surat Keluar</h2>
+                        <h2>Detail Data Penjualan Usaha</h2>
                       </div>
                     </div>
                     <div class="x_content">
@@ -93,38 +93,29 @@ include "login/ceksession.php";
                     <table class="table table-striped">
                       <tbody>
                         <tr>
-                          <td width="40%">No</td>
-                          <td><?php echo $data['No']?></td>
+                          <td>Kode Data</td>
+                          <td><?php echo !empty($data['kode_data']) ? $data['kode_data'] : '-'; ?></td>
                         </tr>
                         <tr>
-                          <td width="40%">Tanggal Keluar</td>
-                          <td><?php echo $data['tanggal_keluar']?></td>
+                          <td>Produk</td>
+                          <td><?php echo $data['produk']?></td>
                         </tr>
                         <tr>
-                          <td>Kode Surat</td>
-                          <td><?php echo $data['kode']?></td>
+                          <td>Jumlah</td>
+                          <td><?php echo $data['jumlah']?></td>
                         </tr>
                         <tr>
-                          <td>Nomor Surat</td>
-                          <td><?php echo $data['nomor_surat']?></td>
+                          <td>Harga</td>
+                          <td><?php echo $data['harga']?></td>
                         </tr>
                         <tr>
-                          <td>Penerima</td>
-                          <td><?php echo $data['penerima']?></td>
-                        </tr>
-                        <tr>
-                          <td>Perihal</td>
-                          <td><?php echo $data['perihal']?></td>
-                        </tr>
-                        <tr>
-                          <td>File</td>
-                          <td><a href="<?php echo 'uploads/'.$data['file_surat'].''?>"><b>Unduh File</b></a>
-                          </td>
+                          <td>Total</td>
+                          <td><?php echo $data['total']?></td>
                         </tr>
                       </tbody>
                     </table>
                     <div class="text-right">
-                      <a href="datasuratkeluar.php" class="btn btn-success"><span
+                      <a href="datapenjualanusaha.php" class="btn btn-success"><span
                           class="glyphicon glyphicon-arrow-left"></span> Kembali</a>
                     </div>
 
@@ -142,7 +133,7 @@ include "login/ceksession.php";
     <!-- footer content -->
     <footer>
       <div class="pull-right">
-    
+ 
       </div>
       <div class="clearfix"></div>
     </footer>

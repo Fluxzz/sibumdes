@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
-include "/sibumdes/koneksi/koneksi.php";
+include "login/ceksession.php";
 ?>
 <html lang="en">
 
@@ -11,7 +11,7 @@ include "/sibumdes/koneksi/koneksi.php";
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Arsip Surat Desa Candirejo Borobudur</title>
+  <title>Input Surat</title>
 
   <!-- Bootstrap -->
   <link href="../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

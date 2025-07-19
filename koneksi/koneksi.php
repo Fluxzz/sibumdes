@@ -1,12 +1,13 @@
 <?php
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$database = 'sibumdes';
+$server   = "localhost";
+$username = "root";
+$password = "";
+$database = "sibumdes";
 
-$db = new mysqli($host, $user, $password, $database);
+// Koneksi ke database
+$db = mysqli_connect($server, $username, $password, $database);
 
-if ($db->connect_error) {
-    die('Koneksi gagal: ' . $db->connect_error);
+// Cek koneksi
+if (!$db) {
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
-?>

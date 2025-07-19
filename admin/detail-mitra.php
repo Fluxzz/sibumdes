@@ -12,7 +12,7 @@ include "login/ceksession.php";
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Arsip Surat Desa Candirejo Borobudur </title>
+  <title>Arsip Surat Desa Candirejo Borobudur</title>
 
   <!-- Bootstrap -->
   <link href="../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -63,7 +63,7 @@ include "login/ceksession.php";
         <div class="">
           <div class="page-title">
             <div class="title_left">
-              <h3>Surat Keluar</h3>
+              <h3>Data Arsip</h3>
             </div>
           </div>
 
@@ -73,19 +73,19 @@ include "login/ceksession.php";
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Surat Masuk ><small>Detail Surat Masuk</small></h2>
+                  <h2>Data Mitra ><small>Detail Data Mitra</small></h2>
                   <div class="clearfix"></div>
                 </div>
                 <?php include '../koneksi/koneksi.php';
                      $id			= mysqli_real_escape_string($db,$_GET['id']);
-                     $sql  		= "SELECT * FROM tb_arsip_surat_keluar where No='".$id."'";                        
+                     $sql  		= "SELECT * FROM tb_data_mitra where id='".$id."'";                        
                      $query  	= mysqli_query($db, $sql);
                      $data 		= mysqli_fetch_array($query);?>
                 <div class="x_content">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="profile_title">
                       <div class="col-md-6">
-                        <h2>Detail Surat Keluar</h2>
+                        <h2>Detail Data Arsip</h2>
                       </div>
                     </div>
                     <div class="x_content">
@@ -93,38 +93,79 @@ include "login/ceksession.php";
                     <table class="table table-striped">
                       <tbody>
                         <tr>
-                          <td width="40%">No</td>
-                          <td><?php echo $data['No']?></td>
+                          <td>Kode Data</td>
+                          <td>:</td>
+                          <td><?php echo !empty($data['kode_data']) ? $data['kode_data'] : '-'; ?></td>
                         </tr>
                         <tr>
-                          <td width="40%">Tanggal Keluar</td>
-                          <td><?php echo $data['tanggal_keluar']?></td>
+                          <td>Nama Pemilik</td>
+                          <td>:</td>
+                          <td><?php echo $data['nama_pemilik']?></td>
                         </tr>
                         <tr>
-                          <td>Kode Surat</td>
-                          <td><?php echo $data['kode']?></td>
+                          <td>Nama Usaha</td>
+                          <td>:</td>
+                          <td><?php echo $data['nama_usaha']?></td>
                         </tr>
                         <tr>
-                          <td>Nomor Surat</td>
-                          <td><?php echo $data['nomor_surat']?></td>
+                          <td>Kategori Usaha</td>
+                          <td>:</td>
+                          <td><?php echo $data['kategori_usaha']?></td>
                         </tr>
                         <tr>
-                          <td>Penerima</td>
-                          <td><?php echo $data['penerima']?></td>
+                          <td>Alamat</td>
+                          <td>:</td>
+                          <td><?php echo $data['alamat']?></td>
                         </tr>
                         <tr>
-                          <td>Perihal</td>
-                          <td><?php echo $data['perihal']?></td>
+                          <td>Nomor Telepon</td>
+                          <td>:</td>
+                          <td><?php echo $data['nomor_telp']?></td>
                         </tr>
                         <tr>
-                          <td>File</td>
-                          <td><a href="<?php echo 'uploads/'.$data['file_surat'].''?>"><b>Unduh File</b></a>
+                          <td>Legalitas Usaha</td>
+                          <td>:</td>
+                          <td><?php echo $data['legalitas_usaha']?></td>
+                        </tr>
+                        <tr>
+                          <td>Bukti Legalitas</td>
+                          <td>:</td>
+                          <td>
+                            <?php if(!empty($data['bukti_legalitas'])): ?>
+                                <a href="uploads/<?php echo basename($data['bukti_legalitas']); ?>" target="_blank" class="btn btn-sm btn-info">
+                                    <i class="fa fa-download"></i> Download File
+                                </a>
+                            <?php else: ?>
+                                <span class="text-muted">Tidak ada file</span>
+                            <?php endif; ?>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Foto Kegiatan</td>
+                          <td>:</td>
+                          <td>
+                            <?php if(!empty($data['foto_kegiatan'])): ?>
+                                <div class="row">
+                                    <?php 
+                                    $fotos = explode(',', $data['foto_kegiatan']);
+                                    foreach($fotos as $foto): 
+                                    ?>
+                                    <div class="col-md-4 mb-2">
+                                        <a href="uploads/foto_kegiatan/<?php echo basename($foto); ?>" target="_blank">
+                                            <img src="uploads/foto_kegiatan/<?php echo basename($foto); ?>" class="img-thumbnail" style="max-height: 150px; width: 100%; object-fit: cover;">
+                                        </a>
+                                    </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            <?php else: ?>
+                                <span class="text-muted">Tidak ada foto</span>
+                            <?php endif; ?>
                           </td>
                         </tr>
                       </tbody>
                     </table>
                     <div class="text-right">
-                      <a href="datasuratkeluar.php" class="btn btn-success"><span
+                      <a href="datamitra.php" class="btn btn-success"><span
                           class="glyphicon glyphicon-arrow-left"></span> Kembali</a>
                     </div>
 
@@ -142,7 +183,7 @@ include "login/ceksession.php";
     <!-- footer content -->
     <footer>
       <div class="pull-right">
-    
+       
       </div>
       <div class="clearfix"></div>
     </footer>

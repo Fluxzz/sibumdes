@@ -1,6 +1,6 @@
-<?php 
-include "/sibumdes/koneksi/koneksi.php";
-$sql = "SELECT * FROM tb_admin WHERE id_admin='".$_SESSION['id']."'";                        
+<?php
+include '../koneksi/koneksi.php';
+$sql = "SELECT * FROM tb_admin WHERE id_admin='" . $_SESSION['id'] . "'";
 $query = mysqli_query($db, $sql);
 $data = mysqli_fetch_array($query);
 ?>
@@ -32,7 +32,6 @@ $data = mysqli_fetch_array($query);
         <ul class="nav side-menu">
           <!-- Item untuk Buat Surat -->
           <li><a href="inputbuatsurat.php"><i class="fa fa-plus-square"></i> Buat Surat </a></li>
-          <li><a href="tambah-postingan.php"><i class="fa fa-plus-square"></i> Tambah Postingan</a></li>
           <!-- Kategori Surat -->
           <li><a><i class="fa fa-file-text"></i> Kategori Surat <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
@@ -40,9 +39,11 @@ $data = mysqli_fetch_array($query);
               <li><a href="datasuratkeluar.php"><i class="fa fa-send"></i> Arsip Surat Keluar</a></li>
             </ul>
           </li>
-          <li><a><i class="fa fa-users"></i> Postingan <span class="fa fa-chevron-down"></span></a>
+          <!-- POSTINGAN -->
+          <li><a href="tambah-postingan.php"><i class="fa fa-plus-square"></i> Tambah Postingan </a></li>
+          <li><a><i class="fa fa-file-text"></i> Postingan <span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
-              <li><a href="data-postingan.php"><i class="fa fa-inbox"></i> Data Postingan</a></li>
+              <li><a href="data-postingan.php"><i class="fa fa-inbox"></i> Arsip Postingan</a></li>
             </ul>
           </li>
         </ul>

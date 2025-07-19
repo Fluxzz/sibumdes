@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
-include "/sibumdes/koneksi/koneksi.php";
+include "login/ceksession.php";
 ?>
 <html lang="en">
   <head>
@@ -132,7 +132,7 @@ include "/sibumdes/koneksi/koneksi.php";
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Apriansyah Wibowo. All Rights Reserved. <a href="https://colorlib.com">Colorlib</a>
+            VURIKO DEV STUDIO. All Rights Reserved. <a href="https://colorlib.com">Colorlib</a>
           </div>
           <div class="clearfix"></div>
         </footer>

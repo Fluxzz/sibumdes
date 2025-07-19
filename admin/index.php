@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
+include "login/ceksession.php";
 ?>
 <html lang="en">
   <head>
@@ -109,7 +110,7 @@ session_start();
         <!-- footer content -->
         <footer>
           <div class="pull-right">
-            Apriansyah Wibowo. All Rights Reserved.</a>
+            VURIKO DEV STUDIO. All Rights Reserved.</a>
           </div>
           <div class="clearfix"></div>
         </footer>

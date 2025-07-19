@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
-include "/sibumdes/koneksi/koneksi.php";
+include "login/ceksession.php";
 ?>
 <html lang="en">
 
@@ -102,7 +102,7 @@ include "/sibumdes/koneksi/koneksi.php";
                 <div class="x_content">
                   <div class="x_content">
                     <?php
-                    include '../koneksi/koneksi.php';
+                    include '/sibumdes/koneksi/koneksi.php';
                     $sql1      = "SELECT * FROM tb_arsip_surat_masuk order by	nomor_surat asc";
                     $query1    = mysqli_query($db, $sql1);
                     $total    = mysqli_num_rows($query1);

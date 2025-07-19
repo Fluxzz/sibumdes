@@ -12,7 +12,7 @@ include "login/ceksession.php";
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Arsip Surat Desa Candirejo Borobudur</title>
+  <title>Data Mitra Desa Candirejo Borobudur</title>
 
   <!-- Bootstrap -->
   <link href="../assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,14 +38,14 @@ include "login/ceksession.php";
     <div class="main_container">
       <!-- Profile and Sidebarmenu -->
       <?php
-        include("sidebarmenu.php");
-        ?>
+      include("sidebarmenu.php");
+      ?>
       <!-- /Profile and Sidebarmenu -->
 
       <!-- top navigation -->
       <?php
-        include("header.php");
-        ?>
+      include("header.php");
+      ?>
       <!-- /top navigation -->
 
       <!-- page content -->
@@ -58,10 +58,10 @@ include "login/ceksession.php";
             <div class="col-md-12 col-sm-12 col-xs-12">
               <div class="x_panel">
                 <div class="x_title">
-                  <h2>Data Surat Keluar</h2>
+                  <h2>Data Mitra</h2>
                   <div class="clearfix"></div>
                 </div>
-                <form action="downloadlaporan_suratkeluar.php" name="download_suratkeluar" method="post"
+                <form action="downloadlaporan_mitra.php" name="download_mitra" method="post"
                   enctype="multipart/form-data" id="demo-form2" data-parsley-validate
                   class="form-horizontal form-label-left">
                   <div class="col-md-2 col-sm-2 col-xs-6">
@@ -85,70 +85,74 @@ include "login/ceksession.php";
                     <select name="tahun" class="select2_single form-control" tabindex="-1">
                       <option>Pilih Tahun</option>
                       <?php
-                                for ($tahun=2017;$tahun<=2022;$tahun++)
-                                      {
-                                       echo  '<option value="'.$tahun.'">'.$tahun.'</option>';
-                                      }
-                            ?>
+                      for ($tahun = 2024; $tahun <= 2030; $tahun++) {
+                        echo  '<option value="' . $tahun . '">' . $tahun . '</option>';
+                      }
+                      ?>
                     </select>
                   </div>
-                  <a href="export/export_surat_keluar.php" class=" btn btn-danger"><i class="fa fa-download"></i> Unduh
-                    Laporan PDF</></a>
-                  <a href="export/exportExcel_surat_keluar.php" class=" btn btn-success"><i class="fa fa-download"></i>
+                  <a href="export/export_data_mitra.php" class="btn btn-danger"><i class="fa fa-download"></i> Unduh
+                    Laporan
+                    PDF</a>
+                  <a href="export/exportExcel_data_mitra.php" class="btn btn-success"><i class="fa fa-download"></i>
                     Unduh
-                    Laporan Excel</></a>
-                  <a href="inputsuratkeluar.php"><button type="button" class="btn btn-primary"><i
-                        class="fa fa-plus"></i> Tambah Surat Keluar</button></a>
+                    Laporan
+                    Excel</a>
+                  <a href="inputdatamitra.php"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>
+                      Tambah Mitra</button></a>
                 </form>
                 <div class="x_content">
-                  <div class="x_content">
-                    <?php
-                              include '../koneksi/koneksi.php';
-                              $sql1  		= "SELECT * FROM tb_arsip_surat_keluar order by nomor_surat asc";                        
-                              $query1  	= mysqli_query($db, $sql1);
-                              $total		= mysqli_num_rows($query1);
-                              if ($total == 0) {
-                                echo"<center><h2>Belum Ada Data Surat Keluar</h2></center>";
-                              }
-                              else{?>
-                    <table id="datatable" class="table table-striped table-bordered">
-                      <thead>
-                        <tr>
-                          <th width="5%">No</th>
-                          <th width="15%">Nomor Surat</th>
-                          <th width="10%">Tanggal Keluar</th>
-                          <th width="15%">Penerima</th>
-                          <th width="12%">Perihal</th>
-                          <th width="13%">Kode</th>
-                          <th width="20%">Keterangan</th>
-                          <th width="5%">Aksi</th>
-                        </tr>
-                      </thead>
+                  <?php
+                  include '../koneksi/koneksi.php';
+                  $sql1      = "SELECT * FROM tb_data_mitra ORDER BY id ASC";
+                  $query1    = mysqli_query($db, $sql1);
+                  $total    = mysqli_num_rows($query1);
+                  if ($total == 0) {
+                    echo "<center><h2>Belum Ada Data Mitra</h2></center>";
+                  } else { ?>
+                  <table id="datatable" class="table table-striped table-bordered">
+                    <thead>
+                      <tr>
+                        <th width="12%">Nama Pemilik</th>
+                        <th width="12%">Nama Usaha</th>
+                        <th width="12%">Kategori Usaha</th>
+                        <th width="15%">Alamat</th>
+                        <th width="10%">Nomor Telepon</th>
+                        <th width="12%">Legalitas Usaha</th>
+                        <th width="10%">Bukti Legalitas</th>
+                        <th width="10%">Foto Kegiatan</th>
+                        <th width="3%">Aksi</th>
+                      </tr>
+                    </thead>
 
-                      <tbody>
-                        <?php
-                            while($data = mysqli_fetch_array($query1)){
-                              echo'<tr>
-                              <td>'. $data['No'].'</td>
-                              <td>'. $data['nomor_surat'].'</td>
-                              <td>'. $data['tanggal_keluar'].'</td>
-                              <td>'. $data['penerima'].'</td>
-                              <td>'. $data['perihal'].'</td>
-                              <td>'. $data['kode'].'</td>
-                              <td>'. $data['keterangan'].'</td>
-                              <td style="text-align:center; white-space: nowrap;">
-                                <a href="surat_keluar/'.$data['file_surat'].'" class="btn btn-success btn-xs" title="Unduh File"><i class="fa fa-download"></i></a><br>
-                                <a href="detail-suratkeluar.php?id='.$data['No'].'" class="btn btn-info btn-xs" title="Detail"><i class="fa fa-file-image-o"></i></a><br>
-                                <a href="editsuratkeluar.php?id='.$data['No'].'" class="btn btn-default btn-xs" title="Edit"><i class="fa fa-edit"></i></a><br>
-                                <a onclick="return konfirmasi()" href="proses/proses_hapussuratkeluar.php?id='.$data['No'].'" class="btn btn-danger btn-xs" title="Hapus"><i class="fa fa-trash-o"></i></a>
-                              </td>
-                              </tr>';
-                            }
-                            ?>
-                      </tbody>
-                    </table>
-                    <?php } ?>
-                  </div>
+                    <tbody>
+                      <?php
+                        while ($data = mysqli_fetch_array($query1)) {
+                          echo '<tr>
+                          <td>' . htmlspecialchars($data['nama_pemilik']) . '</td>
+                          <td>' . htmlspecialchars($data['nama_usaha']) . '</td>
+                          <td>' . htmlspecialchars($data['kategori_usaha']) . '</td>
+                          <td>' . htmlspecialchars($data['alamat']) . '</td>
+                          <td>' . htmlspecialchars($data['nomor_telp']) . '</td>
+                          <td>' . htmlspecialchars($data['legalitas_usaha']) . '</td>
+                          <td>' . (!empty($data['bukti_legalitas']) ? '<a href="../' . htmlspecialchars($data['bukti_legalitas']) . '" target="_blank">Lihat</a>' : '-') . '</td>
+                          <td>' . (!empty($data['foto_kegiatan']) ? '<a href="../' . htmlspecialchars($data['foto_kegiatan']) . '" target="_blank">Lihat</a>' : '-') . '</td>
+                          <td>
+                            <a href="detail-mitra.php?id=' . $data['id'] . '"><button type="button" title="Detail"
+                                class="btn btn-info btn-xs"><i class="fa fa-file-image-o"></i></button></a>
+                            <a href="editmitra.php?id=' . $data['id'] . '"><button type="button" title="Edit"
+                                class="btn btn-default btn-xs"><i class="fa fa-edit"></i></button></a>
+                            <a onclick="return konfirmasi()"
+                              href="proses/proses_hapusmitra.php?id=' . $data['id'] . '"><button type="button" title="Hapus"
+                                class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></button></a>
+                          </td>
+                          </tr>';
+                        }
+                      ?>
+                    </tbody>
+                  </table>
+
+                  <?php } ?>
                 </div>
               </div>
             </div>

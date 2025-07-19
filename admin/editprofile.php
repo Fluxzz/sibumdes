@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 session_start();
-include "/sibumdes/koneksi/koneksi.php";
+include "login/ceksession.php";
 ?>
 <html lang="en">
 
