@@ -8,15 +8,6 @@ if (isset($_POST['submit'])) {
     $status = $_POST['status'];
     $caption = $_POST['caption'];
     $link_konten = $_POST['link_konten'];
-    
-    // Untuk status publish, ambil data tambahan
-    $link_publish = '';
-    $tanggal_publish = '';
-    
-    if ($status == 'publish') {
-        $link_publish = $_POST['link_publish'];
-        $tanggal_publish = $_POST['tanggal_publish'];
-    }
 
     // Upload gambar
     $gambar = '';
@@ -26,14 +17,10 @@ if (isset($_POST['submit'])) {
         move_uploaded_file($_FILES['gambar']['tmp_name'], $upload_dir . $gambar);
     }
 
-    // Query simpan dengan field tambahan untuk publish
-    if ($status == 'publish') {
-        $query = "INSERT INTO tb_postingan (id_kategori, gambar, status, caption, link_konten, link_publish, tanggal_publish, tanggal_posting) 
-                  VALUES ('$id_kategori', '$gambar', '$status', '$caption', '$link_konten', '$link_publish', '$tanggal_publish', NOW())";
-    } else {
-        $query = "INSERT INTO tb_postingan (id_kategori, gambar, status, caption, link_konten, tanggal_posting) 
-                  VALUES ('$id_kategori', '$gambar', '$status', '$caption', '$link_konten', NOW())";
-    }
+    // Query simpan sesuai struktur database yang ada
+    // Hanya field: id_postingan, id_kategori, gambar, status, caption, link_konten, tanggal_posting
+    $query = "INSERT INTO tb_postingan (id_kategori, gambar, status, caption, link_konten, tanggal_posting) 
+              VALUES ('$id_kategori', '$gambar', '$status', '$caption', '$link_konten', NOW())";
 
     if (!mysqli_query($db, $query)) {
         die("Query gagal: " . mysqli_error($db));
@@ -152,40 +139,11 @@ if (isset($_POST['submit'])) {
                           class="required">*</span>
                       </label>
                       <div class="col-md-9 col-sm-9 col-xs-12">
-                        <select id="status" name="status" class="form-control" required="required" onchange="togglePublishFields()">
+                        <select id="status" name="status" class="form-control" required="required">
                           <option value="">-- Pilih Status --</option>
                           <option value="draft">Draft</option>
                           <option value="publish">Publish</option>
                         </select>
-                      </div>
-                    </div>
-
-                    <!-- Field khusus untuk status Publish -->
-                    <div id="publish_fields" style="display:none;">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="link_publish">Link Publikasi <span
-                            class="required">*</span>
-                        </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="url" id="link_publish" name="link_publish" 
-                            placeholder="https://example.com/postingan-anda" class="form-control col-md-7 col-xs-12">
-                          <small class="form-text text-muted">URL dimana postingan akan dipublikasikan</small>
-                        </div>
-                      </div>
-
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12" for="tanggal_publish">Tanggal Publikasi <span
-                            class="required">*</span>
-                        </label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <div class='input-group date' id='myDatepicker1'>
-                            <input type='datetime-local' id="tanggal_publish" name="tanggal_publish" class="form-control" />
-                            <span class="input-group-addon">
-                              <span class="glyphicon glyphicon-calendar"></span>
-                            </span>
-                          </div>
-                          <small class="form-text text-muted">Kapan postingan ini akan dipublikasikan</small>
-                        </div>
                       </div>
                     </div>
 
@@ -266,36 +224,6 @@ if (isset($_POST['submit'])) {
 
   <!-- JavaScript untuk preview gambar -->
   <script>
-    // Fungsi untuk menampilkan/menyembunyikan field publikasi
-    function togglePublishFields() {
-      var status = document.getElementById('status').value;
-      var publishFields = document.getElementById('publish_fields');
-      var linkPublish = document.getElementById('link_publish');
-      var tanggalPublish = document.getElementById('tanggal_publish');
-      
-      if (status === 'publish') {
-        publishFields.style.display = 'block';
-        linkPublish.setAttribute('required', 'required');
-        tanggalPublish.setAttribute('required', 'required');
-        
-        // Set tanggal default ke sekarang
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = String(now.getMonth() + 1).padStart(2, '0');
-        var day = String(now.getDate()).padStart(2, '0');
-        var hours = String(now.getHours()).padStart(2, '0');
-        var minutes = String(now.getMinutes()).padStart(2, '0');
-        
-        tanggalPublish.value = `${year}-${month}-${day}T${hours}:${minutes}`;
-      } else {
-        publishFields.style.display = 'none';
-        linkPublish.removeAttribute('required');
-        tanggalPublish.removeAttribute('required');
-        linkPublish.value = '';
-        tanggalPublish.value = '';
-      }
-    }
-
     // Preview gambar sebelum upload
     document.getElementById('gambar').addEventListener('change', function(e) {
       const file = e.target.files[0];
@@ -383,45 +311,6 @@ if (isset($_POST['submit'])) {
         e.preventDefault();
         alert('Caption minimal 10 karakter!');
         return false;
-      }
-      
-      // Validasi khusus untuk status publish
-      if (status === 'publish') {
-        const linkPublish = document.getElementById('link_publish').value.trim();
-        const tanggalPublish = document.getElementById('tanggal_publish').value;
-        
-        if (!linkPublish) {
-          e.preventDefault();
-          alert('Link publikasi wajib diisi untuk status publish!');
-          return false;
-        }
-        
-        if (!tanggalPublish) {
-          e.preventDefault();
-          alert('Tanggal publikasi wajib diisi untuk status publish!');
-          return false;
-        }
-        
-        // Validasi format URL
-        try {
-          new URL(linkPublish);
-        } catch (_) {
-          e.preventDefault();
-          alert('Format link publikasi tidak valid!');
-          return false;
-        }
-        
-        // Validasi tanggal tidak boleh masa lalu (kecuali untuk backdate)
-        const selectedDate = new Date(tanggalPublish);
-        const now = new Date();
-        now.setMinutes(now.getMinutes() - 5); // Toleransi 5 menit
-        
-        if (selectedDate < now) {
-          if (!confirm('Tanggal publikasi yang dipilih sudah lewat. Apakah Anda yakin ingin melanjutkan?')) {
-            e.preventDefault();
-            return false;
-          }
-        }
       }
       
       // Konfirmasi sebelum submit
