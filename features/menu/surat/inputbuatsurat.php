@@ -31,7 +31,7 @@ $activeMenu = "surat";
         <div class="card" id="form_undangan" style="display:none;">
             <div class="card-header"><div class="card-title">Form Surat Undangan</div></div>
             <div class="card-body">
-                <form action="../../../proses/proses_buatsurat_undangan.php" method="post" target="_blank">
+                <form action="../proses/proses_buatsurat_undangan.php" method="post" target="_blank">
                     <div class="form-group"><label>Nomor Surat</label><input type="text" name="nomor_surat" class="form-control" required></div>
                     <div class="form-group"><label>Tanggal Surat</label><input type="date" name="tanggal" class="form-control" required></div>
                     <div class="form-group"><label>Lampiran</label><input type="text" name="lampiran" class="form-control"></div>
@@ -53,7 +53,7 @@ $activeMenu = "surat";
         <div class="card" id="form_keterangan" style="display:none;">
             <div class="card-header"><div class="card-title">Form Surat Keterangan</div></div>
             <div class="card-body">
-                <form action="../../../proses/proses_buatsurat_keterangan.php" method="post" target="_blank">
+                <form action="../proses/proses_buatsurat_keterangan.php" method="post" target="_blank">
                     <div class="form-group"><label>Nomor Surat</label><input type="text" name="nomor_surat" class="form-control" required></div>
                     <div class="form-group"><label>Tanggal Surat</label><input type="date" name="tanggal" class="form-control" required></div>
                     <hr>

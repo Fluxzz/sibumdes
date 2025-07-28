@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Login - SIBUMDES WUNUT</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
     <link rel="icon" href="assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
-    
+
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         * {
             margin: 0;
@@ -201,7 +202,7 @@
             z-index: 2;
         }
 
-        .form-control:focus + .input-icon {
+        .form-control:focus+.input-icon {
             color: #3b82f6;
         }
 
@@ -372,18 +373,37 @@
         }
 
         @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
         }
 
         /* Mobile responsiveness */
@@ -391,31 +411,31 @@
             .login-container {
                 flex-direction: column;
             }
-            
+
             .login-branding {
                 flex: none;
                 min-height: 40vh;
                 padding: 40px 20px;
             }
-            
+
             .login-branding h1 {
                 font-size: 2.2rem;
             }
-            
+
             .login-branding p {
                 font-size: 1rem;
             }
-            
+
             .login-form-container {
                 flex: 1;
                 padding: 20px;
             }
-            
+
             .login-form {
                 padding: 40px 30px;
                 border-radius: 20px;
             }
-            
+
             .welcome-text h2 {
                 font-size: 1.6rem;
             }
@@ -425,18 +445,19 @@
             .login-form {
                 padding: 30px 20px;
             }
-            
+
             .form-control {
                 height: 50px;
                 padding-left: 45px;
             }
-            
+
             .btn-login {
                 height: 50px;
             }
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
         <div class="login-branding">
@@ -448,20 +469,20 @@
                 <p>Sistem Informasi Badan Usaha Milik Desa untuk pengelolaan yang lebih efisien, transparan, dan modern.</p>
             </div>
         </div>
-        
+
         <div class="login-form-container">
             <div class="floating-shapes">
                 <div class="shape"></div>
                 <div class="shape"></div>
                 <div class="shape"></div>
             </div>
-            
+
             <div class="login-form">
                 <div class="welcome-text">
                     <h2>Selamat Datang</h2>
                     <p>Silakan masuk untuk mengakses dashboard</p>
                 </div>
-                
+
                 <!-- Error Alert (PHP will be processed on server) -->
                 <div id="errorAlert" class="alert alert-danger" style="display: none;">
                     <i class="fas fa-exclamation-circle"></i>
@@ -472,44 +493,41 @@
                     <div class="form-group">
                         <label for="username">Username</label>
                         <div class="input-wrapper">
-                            <input 
-                                id="username" 
-                                name="username_admin" 
-                                type="text" 
-                                class="form-control" 
+                            <input
+                                id="username"
+                                name="username_admin"
+                                type="text"
+                                class="form-control"
                                 placeholder="Masukkan username Anda"
-                                required 
-                                autocomplete="username"
-                            />
+                                required
+                                autocomplete="username" />
                             <i class="fas fa-user input-icon"></i>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="password">Password</label>
                         <div class="input-wrapper">
-                            <input 
-                                id="password" 
-                                name="password" 
-                                type="password" 
-                                class="form-control" 
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                class="form-control"
                                 placeholder="Masukkan password Anda"
                                 required
-                                autocomplete="current-password"
-                            />
+                                autocomplete="none" />
                             <i class="fas fa-lock input-icon"></i>
                             <i class="fas fa-eye password-toggle" id="passwordToggle"></i>
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
                         <div class="remember-me">
                             <input type="checkbox" id="rememberMe" name="remember_me">
                             <label for="rememberMe">Ingat Saya</label>
                         </div>
-                        <a href="#" class="forgot-password">Lupa Password?</a>
                     </div>
-                    
+
                     <button type="submit" class="btn-login" id="loginButton">
                         <div class="btn-content">
                             <span class="btn-text">
@@ -532,7 +550,7 @@
         document.getElementById('passwordToggle').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const toggleIcon = document.getElementById('passwordToggle');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 toggleIcon.classList.remove('fa-eye');
@@ -588,7 +606,7 @@
             const errorAlert = document.getElementById('errorAlert');
             errorAlert.textContent = message;
             errorAlert.style.display = 'block';
-            
+
             // Hide error after 5 seconds
             setTimeout(() => {
                 errorAlert.style.display = 'none';
@@ -600,7 +618,7 @@
             input.addEventListener('focus', function() {
                 this.parentElement.classList.add('focused');
             });
-            
+
             input.addEventListener('blur', function() {
                 this.parentElement.classList.remove('focused');
             });
@@ -618,4 +636,5 @@
         });
     </script>
 </body>
+
 </html>

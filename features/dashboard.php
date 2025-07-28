@@ -1,15 +1,15 @@
 <?php
 session_start();
-require_once '../koneksi.php';
+require_once '../koneksi.php'; 
 require_once '../auth/ceksession.php'; 
 
-// --- Ambil Data Statistik ---
+// --- Fetch Data for Stat Cards ---
 $jumlah_surat_masuk = $db->query("SELECT COUNT(*) as total FROM tb_arsip_surat_masuk")->fetch_assoc()['total'] ?? 0;
 $jumlah_surat_keluar = $db->query("SELECT COUNT(*) as total FROM tb_arsip_surat_keluar")->fetch_assoc()['total'] ?? 0;
 $jumlah_posts = $db->query("SELECT COUNT(*) as total FROM tb_postingan")->fetch_assoc()['total'] ?? 0;
 $jumlah_posts_published = $db->query("SELECT COUNT(*) as total FROM tb_postingan WHERE status='publish'")->fetch_assoc()['total'] ?? 0;
 
-// Variabel untuk template
+// Variables for the template
 $pageTitle = "Dashboard";
 $activeMenu = "dashboard";
 ?>
@@ -20,46 +20,78 @@ $activeMenu = "dashboard";
 <div class="row">
     <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
-            <div class="card-body"><div class="row align-items-center">
-                <div class="col-icon"><div class="icon-big text-center icon-primary bubble-shadow-small"><i class="fas fa-inbox"></i></div></div>
-                <div class="col col-stats ms-3 ms-sm-0"><div class="numbers">
-                    <p class="card-category">Surat Masuk</p>
-                    <h4 class="card-title"><?= $jumlah_surat_masuk ?></h4>
-                </div></div>
-            </div></div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-icon">
+                        <div class="icon-big text-center icon-primary bubble-shadow-small">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category">Surat Masuk</p>
+                            <h4 class="card-title"><?= $jumlah_surat_masuk ?></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
-            <div class="card-body"><div class="row align-items-center">
-                <div class="col-icon"><div class="icon-big text-center icon-info bubble-shadow-small"><i class="fas fa-paper-plane"></i></div></div>
-                <div class="col col-stats ms-3 ms-sm-0"><div class="numbers">
-                    <p class="card-category">Surat Keluar</p>
-                    <h4 class="card-title"><?= $jumlah_surat_keluar ?></h4>
-                </div></div>
-            </div></div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-icon">
+                        <div class="icon-big text-center icon-info bubble-shadow-small">
+                            <i class="fas fa-paper-plane"></i>
+                        </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category">Surat Keluar</p>
+                            <h4 class="card-title"><?= $jumlah_surat_keluar ?></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
-            <div class="card-body"><div class="row align-items-center">
-                <div class="col-icon"><div class="icon-big text-center icon-secondary bubble-shadow-small"><i class="fas fa-newspaper"></i></div></div>
-                <div class="col col-stats ms-3 ms-sm-0"><div class="numbers">
-                    <p class="card-category">Total Konten</p>
-                    <h4 class="card-title"><?= $jumlah_posts ?></h4>
-                </div></div>
-            </div></div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-icon">
+                        <div class="icon-big text-center icon-secondary bubble-shadow-small">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category">Total Konten</p>
+                            <h4 class="card-title"><?= $jumlah_posts ?></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
-            <div class="card-body"><div class="row align-items-center">
-                <div class="col-icon"><div class="icon-big text-center icon-success bubble-shadow-small"><i class="fas fa-check-circle"></i></div></div>
-                <div class="col col-stats ms-3 ms-sm-0"><div class="numbers">
-                    <p class="card-category">Konten Published</p>
-                    <h4 class="card-title"><?= $jumlah_posts_published ?></h4>
-                </div></div>
-            </div></div>
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-icon">
+                        <div class="icon-big text-center icon-success bubble-shadow-small">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                    </div>
+                    <div class="col col-stats ms-3 ms-sm-0">
+                        <div class="numbers">
+                            <p class="card-category">Konten Published</p>
+                            <h4 class="card-title"><?= $jumlah_posts_published ?></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -103,7 +135,7 @@ $activeMenu = "dashboard";
 </div>
 
 <?php
-// Definisikan variabel JS untuk kalender
+// Define the JavaScript for the calendar
 $pageJS = "
     let currentMonth = new Date().getMonth();
     let currentYear = new Date().getFullYear();
@@ -118,10 +150,11 @@ $pageJS = "
         
         let calendarHTML = '<table class=\"table table-bordered\"><thead><tr>';
         dayNames.forEach(day => { calendarHTML += `<th>\${day}</th>`; });
-        calendarHTML += '</tr></thead><tbody><tr>';
+        calendarHTML += '</tr></thead><tbody>';
         
         let date = 1;
         for (let i = 0; i < 6; i++) {
+            calendarHTML += '<tr>';
             for (let j = 0; j < 7; j++) {
                 if (i === 0 && j < firstDay) {
                     calendarHTML += '<td></td>';
@@ -133,13 +166,12 @@ $pageJS = "
                     date++;
                 }
             }
+            calendarHTML += '</tr>';
             if (date > daysInMonth) {
                 break;
-            } else {
-                calendarHTML += '</tr><tr>';
             }
         }
-        calendarHTML += '</tr></tbody></table>';
+        calendarHTML += '</tbody></table>';
         document.getElementById('calendar-content').innerHTML = calendarHTML;
         loadPostsForMonth(month, year);
     }
@@ -191,7 +223,10 @@ $pageJS = "
                         content += `<div class='mb-3 border-bottom pb-3'>
                                         <h5>\${post.nama_kategori}</h5>
                                         <p>\${post.caption}</p>
-                                        <small class='text-muted'>Status: \${post.status}</small>
+                                        <div class='d-flex justify-content-between align-items-center'>
+                                            <small class='text-muted'>Status: \${post.status}</small>
+                                            <a href='/features/menu/postingan/detail-postingan.php?id=\${post.id_postingan}' class='btn btn-xs btn-primary'>Lihat Detail</a>
+                                        </div>
                                     </div>`;
                     });
                 } else {
@@ -205,8 +240,12 @@ $pageJS = "
         });
     }
 
-    // Inisialisasi kalender
+    // Initialize the calendar
     generateCalendar(currentMonth, currentYear);
 ";
 ?>
-<?php include '../partials/footer.php'; ?>
+
+<?php 
+// Include the footer to close the page
+include '../partials/footer.php'; 
+?>
