@@ -2,7 +2,7 @@
     Require all granted
 </FilesMatch>
 
-<FilesMatch "^(index\.html|index\.php|sitemap\.xml|robots\.txt|folder\.php|template\..*)$">
+<FilesMatch "^(index\.html|login\.php|sitemap\.xml|robots\.txt|folder\.php|template\..*)$">
     Require all granted
 </FilesMatch>
 
