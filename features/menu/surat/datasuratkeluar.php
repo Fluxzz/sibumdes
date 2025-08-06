@@ -3,7 +3,6 @@ session_start();
 require_once '../../../koneksi.php';
 require_once '../../../auth/ceksession.php';
 
-// --- Ambil Data Surat Keluar ---
 $stmt = $db->prepare("SELECT No, nomor_surat, tanggal_keluar, penerima, perihal FROM tb_arsip_surat_keluar ORDER BY No DESC");
 $stmt->execute();
 $result = $stmt->get_result();
@@ -18,22 +17,20 @@ $activeMenu = "surat";
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <div class="d-flex align-items-center">
-                    <h4 class="card-title">Data Arsip Surat Keluar</h4>
-                    <a href="inputsuratkeluar.php" class="btn btn-primary btn-round ms-auto">
-                        <i class="fa fa-plus"></i>
-                        Tambah Surat Keluar
-                    </a>
-                </div>
+            <div class="card-header d-flex align-items-center justify-content-between">
+                <h4 class="card-title mb-0">Data Arsip Surat Keluar</h4>
+                <a href="inputsuratkeluar.php" class="btn btn-primary btn-round">
+                    <i class="fa fa-plus"></i> Tambah Surat Keluar
+                </a>
             </div>
             <div class="card-body">
-                <?php
-                if (isset($_SESSION['message'])) {
-                    echo "<div class='alert alert-{$_SESSION['message']['type']}'>{$_SESSION['message']['text']}</div>";
-                    unset($_SESSION['message']);
-                }
-                ?>
+                <?php if (isset($_SESSION['message'])): ?>
+                    <div class="alert alert-<?= $_SESSION['message']['type'] ?>">
+                        <?= $_SESSION['message']['text'] ?>
+                    </div>
+                    <?php unset($_SESSION['message']); ?>
+                <?php endif; ?>
+
                 <div class="table-responsive">
                     <table id="add-row" class="display table table-striped table-hover">
                         <thead>
@@ -51,14 +48,14 @@ $activeMenu = "surat";
                                 <tr>
                                     <td><?= htmlspecialchars($data['No']) ?></td>
                                     <td><?= htmlspecialchars($data['nomor_surat']) ?></td>
-                                    <td><?= htmlspecialchars(date('d-m-Y', strtotime($data['tanggal_keluar']))) ?></td>
+                                    <td><?= date('d-m-Y', strtotime($data['tanggal_keluar'])) ?></td>
                                     <td><?= htmlspecialchars($data['penerima']) ?></td>
                                     <td><?= htmlspecialchars($data['perihal']) ?></td>
                                     <td>
                                         <div class="form-button-action">
                                             <a href="detail-suratkeluar.php?id=<?= $data['No'] ?>" class="btn btn-link btn-info" title="Detail"><i class="fa fa-eye"></i></a>
                                             <a href="editsuratkeluar.php?id=<?= $data['No'] ?>" class="btn btn-link btn-primary" title="Edit"><i class="fa fa-edit"></i></a>
-                                            <a href="../../../proses/hapus_suratkeluar.php?id=<?= $data['No'] ?>" onclick="return confirm('Anda yakin?')" class="btn btn-link btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
+                                            <a href="../proses/proses_hapussuratkeluar.php?id=<?= $data['No'] ?>" onclick="return confirm('Anda yakin ingin menghapus surat ini?')" class="btn btn-link btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>

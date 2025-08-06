@@ -8,8 +8,10 @@ if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
     header('Location: datasuratmasuk.php');
     exit();
 }
+
 $id = (int)$_GET['id'];
 
+// Ambil data surat berdasarkan No
 $stmt = $db->prepare("SELECT * FROM tb_arsip_surat_masuk WHERE No = ?");
 $stmt->bind_param("i", $id);
 $stmt->execute();
@@ -24,7 +26,7 @@ if (!$data) {
 }
 
 $pageTitle = "Detail Surat Masuk";
-$activeMenu = "surat"; 
+$activeMenu = "surat";
 ?>
 
 <?php include '../../../partials/header.php'; ?>
@@ -41,8 +43,8 @@ $activeMenu = "surat";
                     <div class="col-md-8">
                         <table class="table table-striped">
                             <tr><td width="30%"><strong>Nomor Urut</strong></td><td>: <?= htmlspecialchars($data['No']) ?></td></tr>
-                            <tr><td><strong>Tanggal Terima</strong></td><td>: <?= htmlspecialchars(date('d F Y', strtotime($data['tanggal_terima']))) ?></td></tr>
-                            <tr><td><strong>Tanggal Surat</strong></td><td>: <?= htmlspecialchars(date('d F Y', strtotime($data['tanggal_surat']))) ?></td></tr>
+                            <tr><td><strong>Tanggal Terima</strong></td><td>: <?= date('d F Y', strtotime($data['tanggal_terima'])) ?></td></tr>
+                            <tr><td><strong>Tanggal Surat</strong></td><td>: <?= date('d F Y', strtotime($data['tanggal_surat'])) ?></td></tr>
                             <tr><td><strong>Nomor Surat</strong></td><td>: <?= htmlspecialchars($data['nomor_surat']) ?></td></tr>
                             <tr><td><strong>Pengirim</strong></td><td>: <?= htmlspecialchars($data['pengirim']) ?></td></tr>
                             <tr><td><strong>Penerima</strong></td><td>: <?= htmlspecialchars($data['penerima_surat']) ?></td></tr>
@@ -52,9 +54,9 @@ $activeMenu = "surat";
                             <tr><td><strong>Keterangan</strong></td><td>: <?= nl2br(htmlspecialchars($data['keterangan'])) ?></td></tr>
                             <tr>
                                 <td><strong>File Surat</strong></td>
-                                <td>: 
-                                    <?php if(!empty($data['file_surat'])): ?>
-                                        <a href="../../../uploads/surat_masuk/<?= htmlspecialchars($data['file_surat']) ?>" target="_blank" class="btn btn-sm btn-primary">
+                                <td>:
+                                    <?php if (!empty($data['file_surat'])): ?>
+                                        <a href="../../uploads/surat_masuk/<?= htmlspecialchars($data['file_surat']) ?>" target="_blank" class="btn btn-sm btn-primary">
                                             <i class="fas fa-download"></i> Unduh File
                                         </a>
                                     <?php else: ?> - <?php endif; ?>
@@ -64,9 +66,9 @@ $activeMenu = "surat";
                     </div>
                     <div class="col-md-4">
                         <strong>Lampiran Foto:</strong><br>
-                        <?php if(!empty($data['lampiran_foto'])): ?>
-                            <a href="../../../uploads/surat_masuk/<?= htmlspecialchars($data['lampiran_foto']) ?>" target="_blank">
-                                <img src="../../../uploads/surat_masuk/<?= htmlspecialchars($data['lampiran_foto']) ?>" alt="Lampiran" class="img-fluid rounded mt-2">
+                        <?php if (!empty($data['lampiran_foto'])): ?>
+                            <a href="../../uploads/surat_masuk/<?= htmlspecialchars($data['lampiran_foto']) ?>" target="_blank">
+                                <img src="../../uploads/surat_masuk/<?= htmlspecialchars($data['lampiran_foto']) ?>" alt="Lampiran" class="img-fluid rounded mt-2">
                             </a>
                         <?php else: ?>
                             <p class="mt-2"><em>Tidak ada lampiran foto.</em></p>

@@ -9,7 +9,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 $pageTitle = "Arsip Surat Masuk";
-$activeMenu = "surat"; 
+$activeMenu = "surat";
 ?>
 
 <?php include '../../../partials/header.php'; ?>
@@ -47,7 +47,7 @@ $activeMenu = "surat";
                             </tr>
                         </thead>
                         <tbody>
-                            <?php while($data = $result->fetch_assoc()): ?>
+                            <?php while ($data = $result->fetch_assoc()): ?>
                                 <tr>
                                     <td><?= htmlspecialchars($data['No']) ?></td>
                                     <td><?= htmlspecialchars($data['nomor_surat']) ?></td>
@@ -58,7 +58,8 @@ $activeMenu = "surat";
                                         <div class="form-button-action">
                                             <a href="detail-suratmasuk.php?id=<?= $data['No'] ?>" class="btn btn-link btn-info" title="Detail"><i class="fa fa-eye"></i></a>
                                             <a href="editsuratmasuk.php?id=<?= $data['No'] ?>" class="btn btn-link btn-primary" title="Edit"><i class="fa fa-edit"></i></a>
-                                            <a href="../../../proses/hapus_suratmasuk.php?id=<?= $data['No'] ?>" onclick="return confirm('Anda yakin?')" class="btn btn-link btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
+                                            <a href="../proses/proses_hapussuratmasuk.php?id=<?= $data['No'] ?>" onclick="return confirm('Anda yakin ingin menghapus surat ini?')" class="btn btn-link btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -71,7 +72,7 @@ $activeMenu = "surat";
     </div>
 </div>
 
-<?php 
+<?php
 $stmt->close();
-include '../../../partials/footer.php'; 
+include '../../../partials/footer.php';
 ?>

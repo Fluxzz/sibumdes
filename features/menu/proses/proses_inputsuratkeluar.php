@@ -1,37 +1,51 @@
 <?php
-session_start();
-if (!isset($_SESSION['id'])) { header('Location: ../login.php'); exit(); }
-require_once '../koneksi.php';
+include '../../../auth/ceksession.php';
+include '../../../koneksi.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $tgl_keluar = $_POST['tanggal_keluar'];
-    $nomor_surat = trim($_POST['nomor_surat']);
-    $penerima = trim($_POST['penerima']);
-    $perihal = trim($_POST['perihal']);
-    $kode = trim($_POST['kode']);
-    $keterangan = trim($_POST['keterangan']);
-    
-    $nama_file = null;
-    if (isset($_FILES['file_surat']) && $_FILES['file_surat']['error'] === UPLOAD_ERR_OK) {
-        $upload_dir = '../assets/uploads/surat_keluar/';
-        if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
-        $nama_file = "surat_keluar_" . uniqid() . ".pdf";
-        if (!move_uploaded_file($_FILES['file_surat']['tmp_name'], $upload_dir . $nama_file)) {
-            $nama_file = null; // Gagal upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tanggal_keluar = $_POST['tanggal_keluar'];
+    $nomor_surat = $_POST['nomor_surat'];
+    $penerima = $_POST['penerima'];
+    $perihal = $_POST['perihal'];
+    $kode = $_POST['kode'];
+    $keterangan = $_POST['keterangan'];
+
+    // Penanganan upload file
+    $file_surat = '';
+    if (isset($_FILES['file_surat']) && $_FILES['file_surat']['error'] === 0) {
+        $nama_file = $_FILES['file_surat']['name'];
+        $tmp_file = $_FILES['file_surat']['tmp_name'];
+        $folder_tujuan = '../../uploads/surat_keluar/';
+        $file_surat = uniqid() . '_' . $nama_file;
+
+        // Pindahkan file
+        if (!move_uploaded_file($tmp_file, $folder_tujuan . $file_surat)) {
+            echo "Gagal mengunggah file.";
+            exit();
         }
     }
-    
-    // Manual ID calculation is removed. Assuming 'No' is AUTO_INCREMENT.
-    $stmt = $db->prepare("INSERT INTO tb_arsip_surat_keluar (tanggal_keluar, nomor_surat, penerima, perihal, kode, keterangan, file_surat) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $tgl_keluar, $nomor_surat, $penerima, $perihal, $kode, $keterangan, $nama_file);
 
-    if ($stmt->execute()) {
-        $_SESSION['message'] = ['type' => 'success', 'text' => 'Data surat keluar berhasil disimpan!'];
+    // Query input ke tabel yang benar
+    $query = "INSERT INTO tb_arsip_surat_keluar 
+                (tanggal_keluar, nomor_surat, penerima, perihal, kode, keterangan, file_surat)
+              VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = mysqli_prepare($db, $query);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, 'sssssss', $tanggal_keluar, $nomor_surat, $penerima, $perihal, $kode, $keterangan, $file_surat);
+        $result = mysqli_stmt_execute($stmt);
+
+        if ($result) {
+            header("Location: ../surat/datasuratkeluar.php?status=sukses");
+            exit();
+        } else {
+            echo "Gagal menyimpan data ke database.";
+        }
+
+        mysqli_stmt_close($stmt);
     } else {
-        $_SESSION['message'] = ['type' => 'error', 'text' => 'Gagal menyimpan data surat keluar.'];
+        echo "Kesalahan query: " . mysqli_error($db);
     }
-    $stmt->close();
-    header('Location: ../datasuratkeluar.php');
-    exit();
+} else {
+    echo "Metode tidak diperbolehkan.";
 }
 ?>

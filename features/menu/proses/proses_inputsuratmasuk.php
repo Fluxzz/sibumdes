@@ -1,44 +1,65 @@
 <?php
 session_start();
-if (!isset($_SESSION['id'])) { header('Location: ../login.php'); exit(); }
-require_once '../koneksi.php';
+include '../../../koneksi.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $tanggal_terima = $_POST['tanggal_terima'];
-    $tanggal_surat = $_POST['tanggal_surat'];
-    // ... (ambil semua data POST lainnya) ...
+if (isset($_POST['submit'])) {
+    // Escape string
+    $nomor_surat      = mysqli_real_escape_string($db, $_POST['nomor_surat']);
+    $tanggal_terima   = $_POST['tanggal_terima'];
+    $tanggal_surat    = $_POST['tanggal_surat'];
+    $pengirim         = mysqli_real_escape_string($db, $_POST['pengirim']);
+    $penerima_surat   = mysqli_real_escape_string($db, $_POST['penerima_surat']);
+    $disposisi        = mysqli_real_escape_string($db, $_POST['disposisi']);
+    $perihal          = mysqli_real_escape_string($db, $_POST['perihal']);
+    $kode             = mysqli_real_escape_string($db, $_POST['kode']);
+    $keterangan       = mysqli_real_escape_string($db, $_POST['keterangan']);
 
-    $upload_dir = '../assets/uploads/surat_masuk/';
-    if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+    // Handle file_surat
+    $file_surat = $_FILES['file_surat']['name'];
+    $tmp_surat = $_FILES['file_surat']['tmp_name'];
+    $ext_surat = strtolower(pathinfo($file_surat, PATHINFO_EXTENSION));
+    $new_file_surat = time() . "_surat." . $ext_surat;
+    $path_surat = "../../uploads/surat_masuk/" . $new_file_surat;
 
-    $nama_file_surat = null;
-    if (isset($_FILES['file_surat']) && $_FILES['file_surat']['error'] === UPLOAD_ERR_OK) {
-        $nama_file_surat = "surat_masuk_" . uniqid() . ".pdf";
-        if (!move_uploaded_file($_FILES['file_surat']['tmp_name'], $upload_dir . $nama_file_surat)) {
-            $nama_file_surat = null;
-        }
+    // Handle lampiran_foto
+    $lampiran_foto = $_FILES['lampiran_foto']['name'];
+    $tmp_foto = $_FILES['lampiran_foto']['tmp_name'];
+    $ext_foto = strtolower(pathinfo($lampiran_foto, PATHINFO_EXTENSION));
+    $new_lampiran_foto = time() . "_foto." . $ext_foto;
+    $path_foto = "../../uploads/surat_masuk/" . $new_lampiran_foto;
+
+    // Validasi file
+    $allowed_surat = ['pdf'];
+    $allowed_foto = ['jpg', 'jpeg', 'png'];
+
+    if (!in_array($ext_surat, $allowed_surat)) {
+        echo "File surat harus berformat PDF.";
+        exit();
     }
 
-    $nama_lampiran_foto = null;
-    if (isset($_FILES['lampiran_foto']) && $_FILES['lampiran_foto']['error'] === UPLOAD_ERR_OK) {
-        $ext = pathinfo($_FILES['lampiran_foto']['name'], PATHINFO_EXTENSION);
-        $nama_lampiran_foto = "lampiran_" . uniqid() . "." . $ext;
-        if (!move_uploaded_file($_FILES['lampiran_foto']['tmp_name'], $upload_dir . $nama_lampiran_foto)) {
-            $nama_lampiran_foto = null;
-        }
+    if (!in_array($ext_foto, $allowed_foto)) {
+        echo "Lampiran foto harus berformat JPG, JPEG, atau PNG.";
+        exit();
     }
-    
-    // Manual ID calculation is removed. Assuming 'No' is AUTO_INCREMENT.
-    $stmt = $db->prepare("INSERT INTO tb_arsip_surat_masuk (tanggal_terima, tanggal_surat, ..., file_surat, lampiran_foto) VALUES (?, ?, ..., ?, ?)");
-    // $stmt->bind_param("sssssssssss", $tanggal_terima, ..., $nama_file_surat, $nama_lampiran_foto);
 
-    if ($stmt->execute()) {
-        $_SESSION['message'] = ['type' => 'success', 'text' => 'Data surat masuk berhasil disimpan!'];
+    // Pindahkan file jika valid
+    $upload_surat = move_uploaded_file($tmp_surat, $path_surat);
+    $upload_foto = move_uploaded_file($tmp_foto, $path_foto);
+
+    if ($upload_surat && $upload_foto) {
+        $query = "INSERT INTO tb_arsip_surat_masuk 
+            (nomor_surat, tanggal_terima, tanggal_surat, pengirim, penerima_surat, disposisi, perihal, kode, keterangan, file_surat, lampiran_foto) 
+            VALUES 
+            ('$nomor_surat', '$tanggal_terima', '$tanggal_surat', '$pengirim', '$penerima_surat', '$disposisi', '$perihal', '$kode', '$keterangan', '$new_file_surat', '$new_lampiran_foto')";
+
+        if (mysqli_query($db, $query)) {
+            header("Location: ../surat/datasuratmasuk.php?status=sukses");
+            exit();
+        } else {
+            echo "Gagal menyimpan data ke database: " . mysqli_error($db);
+        }
     } else {
-        $_SESSION['message'] = ['type' => 'error', 'text' => 'Gagal menyimpan data surat masuk.'];
+        echo "Gagal mengunggah file.";
     }
-    $stmt->close();
-    header('Location: ../datasuratmasuk.php');
-    exit();
 }
 ?>

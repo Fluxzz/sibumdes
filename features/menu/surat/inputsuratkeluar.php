@@ -17,7 +17,7 @@ $activeMenu = "surat";
                 <div class="card-title">Form Tambah Surat Keluar</div>
             </div>
             <div class="card-body">
-                <form action="../../../proses/input_suratkeluar.php" method="post" enctype="multipart/form-data">
+                <form action="../proses/proses_inputsuratkeluar.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="tanggal_keluar">Tanggal Keluar</label>
                         <input type="date" name="tanggal_keluar" id="tanggal_keluar" class="form-control" required>

@@ -1,7 +1,7 @@
 <?php
 session_start();
-require_once '../../koneksi.php';
-require_once '../../auth/ceksession.php';
+require_once '../../../koneksi.php';
+require_once '../../../auth/ceksession.php';
 
 if (isset($_GET['id'])) {
     $id = (int)$_GET['id'];
@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
         $_SESSION['message'] = ['type' => 'danger', 'text' => 'Gagal menghapus data.'];
     }
     $stmt->close();
-    header("Location: ../rekap-usaha.php");
+    header("Location: ../penjualan/rekap-usaha.php");
     exit();
 }
 ?>

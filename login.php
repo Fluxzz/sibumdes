@@ -584,9 +584,7 @@
                 return;
             }
 
-            // Simulate processing delay for better UX
             setTimeout(() => {
-                // Form will submit normally after this delay
             }, 500);
         });
 

@@ -33,9 +33,7 @@ $activeMenu = "surat";
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header">
-                <div class="card-title">Detail Surat Keluar: <?= htmlspecialchars($data['nomor_surat']) ?></div>
-            </div>
+            <div class="card-header"><div class="card-title">Detail Surat Keluar: <?= htmlspecialchars($data['nomor_surat']) ?></div></div>
             <div class="card-body">
                 <table class="table table-striped">
                     <tr><td width="30%"><strong>Nomor Urut</strong></td><td>: <?= htmlspecialchars($data['No']) ?></td></tr>
@@ -49,9 +47,7 @@ $activeMenu = "surat";
                         <td><strong>File Surat</strong></td>
                         <td>: 
                             <?php if(!empty($data['file_surat'])): ?>
-                                <a href="../../../uploads/surat_keluar/<?= htmlspecialchars($data['file_surat']) ?>" target="_blank" class="btn btn-sm btn-primary">
-                                    <i class="fas fa-download"></i> Unduh File
-                                </a>
+                                <a href="../../uploads/surat_keluar/<?= htmlspecialchars($data['file_surat']) ?>" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> Unduh File</a>
                             <?php else: ?> - <?php endif; ?>
                         </td>
                     </tr>
