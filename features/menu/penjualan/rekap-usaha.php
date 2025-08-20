@@ -105,6 +105,14 @@ $activeMenu = "usaha";
                 </ul>
 
                 <div class="tab-content mt-3" id="rekapTabsContent">
+
+                    <?php if (isset($_SESSION['message'])): ?>
+                        <div class="alert alert-<?= $_SESSION['message']['type']; ?>">
+                            <?= $_SESSION['message']['text']; ?>
+                        </div>
+                        <?php unset($_SESSION['message']); ?>
+                    <?php endif; ?>
+
                     <!-- Tabel Penjualan -->
                     <div class="tab-pane fade show active" id="penjualan" role="tabpanel">
                         <div class="table-responsive">
@@ -159,7 +167,7 @@ $activeMenu = "usaha";
                                             <td><?= htmlspecialchars($row['keterangan']) ?></td>
                                             <td>Rp <?= number_format($row['pengeluaran'], 0, ',', '.') ?></td>
                                             <td>
-                                                <a href="../proses/proses_hapuspenjualan.php?id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus?')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                                <a href="../proses/proses_hapuspengeluaran.php?id=<?= $row['id'] ?>" onclick="return confirm('Yakin ingin menghapus?')" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                             </td>
                                         </tr>
                                     <?php endwhile; ?>

@@ -1,4 +1,5 @@
 <?php
+
 // Ambil data admin yang sedang login
 if (isset($db) && isset($_SESSION['id'])) {
     $stmt_user = $db->prepare("SELECT nama_admin, username_admin, gambar FROM tb_admin WHERE id_admin = ?");
@@ -8,6 +9,39 @@ if (isset($db) && isset($_SESSION['id'])) {
     $stmt_user->close();
 }
 ?>
+<style>
+
+    .sidebar .user {
+        padding: 25px 10px;
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        flex-direction: column;
+    }
+    
+    .sidebar .user .avatar-sm img {
+        width: 65px;
+        height: 65px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    
+    .sidebar .user .info span {
+        display: block;
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    .sidebar .user .info .user-level {
+        display: block;
+        font-size: 12px;
+        color: #a0a0a0;
+    }
+</style>
+
+
 <div class="sidebar" data-background-color="dark">
     <div class="sidebar-logo">
         <div class="logo-header" data-background-color="dark">
@@ -62,6 +96,7 @@ if (isset($db) && isset($_SESSION['id'])) {
                         <ul class="nav nav-collapse">
                             <li><a href="/features/menu/postingan/tambah-postingan.php"><span class="sub-item">Tambah Postingan</span></a></li>
                             <li><a href="/features/menu/postingan/data-postingan.php"><span class="sub-item">Data Postingan</span></a></li>
+                            <li><a href="/features/menu/postingan/analisis-konten.php"><span class="sub-item">Analisis Konten</span></a></li>
                         </ul>
                     </div>
                 </li>
@@ -140,3 +175,7 @@ if (isset($db) && isset($_SESSION['id'])) {
                     <li class="nav-item"><a><?php echo isset($activeMenu) ? ucfirst($activeMenu) : 'Page'; ?></a></li>
                 </ul>
             </div>
+
+
+            
+

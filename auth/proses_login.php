@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../koneksi.php'; // Path dari auth/ ke root
+require_once '../koneksi.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['username_admin'], $_POST['password'])) {
