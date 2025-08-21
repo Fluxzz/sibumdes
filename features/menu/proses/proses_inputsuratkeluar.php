@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['file_surat']) && $_FILES['file_surat']['error'] === 0) {
         $nama_file = $_FILES['file_surat']['name'];
         $tmp_file = $_FILES['file_surat']['tmp_name'];
-        $folder_tujuan = '../../uploads/surat_keluar/';
+        $folder_tujuan = '../uploads/surat_keluar/';
         $file_surat = uniqid() . '_' . $nama_file;
 
         // Pindahkan file

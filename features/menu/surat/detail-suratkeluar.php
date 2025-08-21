@@ -47,7 +47,7 @@ $activeMenu = "surat";
                         <td><strong>File Surat</strong></td>
                         <td>: 
                             <?php if(!empty($data['file_surat'])): ?>
-                                <a href="../../uploads/surat_keluar/<?= htmlspecialchars($data['file_surat']) ?>" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> Unduh File</a>
+                                <a href="../uploads/surat/<?= htmlspecialchars($data['file_surat']) ?>" target="_blank" class="btn btn-sm btn-primary"><i class="fas fa-download"></i> Unduh File</a>
                             <?php else: ?> - <?php endif; ?>
                         </td>
                     </tr>

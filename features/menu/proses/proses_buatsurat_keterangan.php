@@ -1,21 +1,21 @@
 <?php
 session_start();
 
-require '../../dompdf/autoload.inc.php';
-include '../../koneksi.php';
+include '../../../dompdf/autoload.inc.php';
+include '../../../koneksi.php';
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
 if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis_keterangan_pendukung'])) {
 
-    $pdf_dir = '../uploads/surat/keterangan/'; // Ensure this directory exists and is writable
+    $pdf_dir = '../../uploads/surat/keterangan';
     $pdf_filename = "Surat_Keterangan_" . htmlspecialchars($_POST['nomor_surat']) . ".pdf";
 
     $pdf_path = $pdf_dir . $pdf_filename;
     $target_dir = "../images/";
 
-    $file_extension = pathinfo('../../assets/images/kopsurat.jpg', PATHINFO_EXTENSION);
+    $file_extension = pathinfo('../../../assets/images/kopsurat.jpg', PATHINFO_EXTENSION);
     $target_file = "../../assets/images/kopsurat.jpg";
     $image_data = file_get_contents($target_file);
     $base64_image_kopsurat = 'data:image/' . $file_extension . ';base64,' . base64_encode($image_data);
@@ -32,12 +32,21 @@ if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis
     // Saya akan asumsikan 'tanggal' dari form itu untuk tanggal surat,
     // dan jika ada input lain untuk tanggal lahir, Anda perlu menyesuaikan nama 'name' di form.
     // Misal: $tanggal_lahir_individu = htmlspecialchars($_POST['tanggal_lahir']); 
-    
+
     // Format tanggal
     $bulan = [
-        1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
-        5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
-        9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+        1 => 'Januari',
+        2 => 'Februari',
+        3 => 'Maret',
+        4 => 'April',
+        5 => 'Mei',
+        6 => 'Juni',
+        7 => 'Juli',
+        8 => 'Agustus',
+        9 => 'September',
+        10 => 'Oktober',
+        11 => 'November',
+        12 => 'Desember'
     ];
 
     // Format tanggal surat
@@ -241,14 +250,14 @@ if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis
     $query = "INSERT INTO tb_arsip_surat_keluar (tanggal_keluar, nomor_surat, penerima, perihal, kode, keterangan, file_surat) 
               VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt_insert = mysqli_prepare($db, $query);
-    
+
     $perihal_text = "Surat Keterangan";
     $kode_text = "-";
     $keterangan_arsip = "Dibuat dari fitur Buat surat keterangan";
-    
+
     // Pastikan $pdf_filename adalah nama file saja, bukan path lengkap, jika kolom database hanya menyimpan nama file
-    mysqli_stmt_bind_param($stmt_insert, "sssssss", $tanggal, $nomor_surat, $nama, $perihal_text, $kode_text, $keterangan_arsip, $pdf_filename); 
-    
+    mysqli_stmt_bind_param($stmt_insert, "sssssss", $tanggal, $nomor_surat, $nama, $perihal_text, $kode_text, $keterangan_arsip, $pdf_filename);
+
     if (mysqli_stmt_execute($stmt_insert)) {
         header('Content-Type: application/pdf');
         header('Content-Disposition: attachment; filename="' . $pdf_filename . '"');
@@ -262,4 +271,3 @@ if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis
 } else {
     echo "Data tidak lengkap!";
 }
-?>

@@ -39,6 +39,8 @@ if (isset($db) && isset($_SESSION['id'])) {
         font-size: 12px;
         color: #a0a0a0;
     }
+
+
 </style>
 
 
@@ -46,7 +48,7 @@ if (isset($db) && isset($_SESSION['id'])) {
     <div class="sidebar-logo">
         <div class="logo-header" data-background-color="dark">
             <a href="/features/dashboard.php" class="logo">
-                <img src="/assets/img/kaiadmin/logo_light.svg" alt="navbar brand" class="navbar-brand" height="20" />
+                <i class="fas fa-landmark">SIBUMDES - Wunut</i>
             </a>
             <div class="nav-toggle">
                 <button class="btn btn-toggle toggle-sidebar"><i class="gg-menu-right"></i></button>
