@@ -8,7 +8,7 @@
             &copy; <?= date('Y') ?> SIBUMDES
         </div>
         <div>
-            Developed by <a target="_blank" href="#">Vuriko Studio</a>.
+            Developed by <a href="#">Vuriko Studio</a>.
         </div>
     </div>
 </footer>

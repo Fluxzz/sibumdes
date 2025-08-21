@@ -16,7 +16,7 @@ $activeMenu = "dashboard";
 
 <?php include '../partials/header.php'; ?>
 <?php include '../partials/sidebar.php'; ?>
-
+<body>
 <div class="row">
     <div class="col-sm-6 col-md-3">
         <div class="card card-stats card-round">
@@ -134,6 +134,7 @@ $activeMenu = "dashboard";
     </div>
 </div>
 
+
 <?php
 // Define the JavaScript for the calendar
 $pageJS = "
@@ -245,7 +246,8 @@ $pageJS = "
 ";
 ?>
 
-<?php 
-// Include the footer to close the page
-include '../partials/footer.php'; 
-?>
+<?php include '../partials/footer.php';  ?>
+
+    
+</body>
+
