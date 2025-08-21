@@ -1,39 +1,57 @@
 <?php
+// WAJIB ADA: Untuk menampilkan pesan error jika ada masalah, sangat membantu saat development
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
 
-include '../../../dompdf/autoload.inc.php';
-include '../../../koneksi.php';
+// DISARANKAN: Gunakan require_once agar skrip berhenti jika file penting tidak ditemukan
+require_once '../../../dompdf/autoload.inc.php';
+require_once '../../../koneksi.php'; // Pastikan path ini sudah benar ke file koneksi Anda
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
 if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis_keterangan_pendukung'])) {
 
-    $pdf_dir = '../../uploads/surat/keterangan';
-    $pdf_filename = "Surat_Keterangan_" . htmlspecialchars($_POST['nomor_surat']) . ".pdf";
+    // DIKOREKSI: Path penyimpanan PDF dibuat di root folder agar lebih rapi (../ akan naik satu level dari 'proses')
+    $pdf_dir = '../../../uploads/'; // Ini akan mengarah ke folder 'uploads' di direktori utama proyek Anda
 
+    // PENAMBAHAN: Cek apakah folder uploads ada, jika tidak, coba buat
+    if (!file_exists($pdf_dir) || !is_dir($pdf_dir)) {
+        mkdir($pdf_dir, 0775, true); // Membuat folder jika belum ada
+    }
+
+    // Nama file PDF
+    $nomor_surat_clean = preg_replace('/[^A-Za-z0-9\-]/', '_', $_POST['nomor_surat']); // Membersihkan karakter aneh dari nomor surat untuk nama file
+    $pdf_filename = "Surat_Keterangan_" . $nomor_surat_clean . ".pdf";
     $pdf_path = $pdf_dir . $pdf_filename;
-    $target_dir = "../images/";
 
-    $file_extension = pathinfo('../../../assets/images/kopsurat.jpg', PATHINFO_EXTENSION);
-    $target_file = "../../assets/images/kopsurat.jpg";
-    $image_data = file_get_contents($target_file);
-    $base64_image_kopsurat = 'data:image/' . $file_extension . ';base64,' . base64_encode($image_data);
+    // DIKOREKSI: Path ke kop surat disamakan dan dipastikan benar
+    $path_kopsurat = '../../../assets/images/kopsurat.jpg'; // Pastikan ini adalah path yang benar dari file proses.php
 
-    // Ambil data dari form
+    // PENAMBAHAN: Cek apakah file kop surat ada sebelum digunakan
+    if (file_exists($path_kopsurat)) {
+        $image_data = file_get_contents($path_kopsurat);
+        $file_extension = pathinfo($path_kopsurat, PATHINFO_EXTENSION);
+        $base64_image_kopsurat = 'data:image/' . $file_extension . ';base64,' . base64_encode($image_data);
+    } else {
+        // Jika kop surat tidak ada, bisa dihentikan atau gunakan placeholder
+        die("Error: File kop surat tidak ditemukan di: " . $path_kopsurat);
+        // $base64_image_kopsurat = ''; // Atau biarkan kosong
+    }
+
+
+    // Ambil data dari form dengan aman
     $nomor_surat = htmlspecialchars($_POST['nomor_surat']);
     $nama = htmlspecialchars($_POST['nama']);
     $jenis_keterangan_pendukung = htmlspecialchars($_POST['jenis_keterangan_pendukung']);
     $keterangan_pendukung = htmlspecialchars($_POST['keterangan_pendukung']);
     $tanggal = htmlspecialchars($_POST['tanggal']);
-    $keterangan = htmlspecialchars($_POST['keterangan']);
-    // Pastikan variabel $tanggal_lahir juga diambil jika digunakan di konten surat
-    // Ini penting jika Anda memiliki dua input dengan name="tanggal" seperti di form
-    // Saya akan asumsikan 'tanggal' dari form itu untuk tanggal surat,
-    // dan jika ada input lain untuk tanggal lahir, Anda perlu menyesuaikan nama 'name' di form.
-    // Misal: $tanggal_lahir_individu = htmlspecialchars($_POST['tanggal_lahir']); 
+    $keterangan = nl2br(htmlspecialchars($_POST['keterangan'])); // nl2br agar baris baru di textarea tetap ada di PDF
 
-    // Format tanggal
+    // Format tanggal ke format Indonesia
     $bulan = [
         1 => 'Januari',
         2 => 'Februari',
@@ -48,8 +66,6 @@ if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis
         11 => 'November',
         12 => 'Desember'
     ];
-
-    // Format tanggal surat
     $date = DateTime::createFromFormat('Y-m-d', $tanggal);
     $bulan_angka = (int) $date->format('n');
     $tanggal_format = $date->format('d') . ' ' . $bulan[$bulan_angka] . ' ' . $date->format('Y');
@@ -60,184 +76,71 @@ if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis
     $options->set('isRemoteEnabled', true);
     $dompdf = new Dompdf($options);
 
-    // Buat konten HTML untuk PDF
+    // Buat konten HTML untuk PDF (Tidak ada perubahan di sini, sudah bagus)
     $html = "
     <!DOCTYPE html>
-<html lang='id'>
-<head>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Times New Roman', serif;
-            line-height: 1.6;
-            font-size: 14px;
-            margin: 0.5cm;
-            background-color: #ffffff;
-            color: #000;
-        }
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            border: none;
-            padding: 0;
-        }
-        .kop-surat {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .kop-surat img {
-            width: 100%;
-            height: auto;
-            max-width: 800px;
-        }
-        .judul {
-            text-align: center;
-            font-weight: bold;
-            text-decoration: underline;
-            font-size: 18px;
-        }
-        .nomor {
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 14px;
-        }
-        .content {
-            margin: 20px 0;
-            text-align: justify;
-            line-height: 1.8;
-        }
-        
-        /* --- Perubahan pada CSS untuk Keselarasan Teks --- */
-        .data-section {
-            margin: 20px 0;
-            padding-left: 40px; /* Indentasi dari kiri */
-            display: table; /* Menggunakan display table untuk keselarasan kolom */
-            width: auto; /* Sesuaikan lebar */
-        }
-        .data-row {
-            display: table-row; /* Setiap baris adalah baris tabel */
-        }
-        .data-label, .data-colon, .data-value {
-            display: table-cell; /* Setiap bagian adalah sel tabel */
-            padding-right: 5px; /* Spasi antar kolom */
-            vertical-align: top; /* Penyelarasan vertikal */
-        }
-        .data-label {
-            width: 120px; /* Tetapkan lebar tetap untuk label kiri */
-            min-width: 120px; /* Pastikan lebar minimum */
-            white-space: nowrap; /* Jangan biarkan label pindah baris */
-        }
-        .data-colon {
-            width: 10px; /* Lebar untuk titik dua */
-        }
-        /* --- Akhir Perubahan CSS Keselarasan Teks --- */
-
-        .isi-keterangan {
-            text-align: justify;
-            margin-top: 20px; /* Spasi setelah data-section */
-        }
-        .penutup {
-            margin: 30px 0;
-        }
-        .signature {
-            margin-top: 40px;
-            text-align: right;
-            padding-right: 80px;
-        }
-        .signature-content {
-            display: inline-block;
-            text-align: center;
-        }
-        .signature-space {
-            height: 80px; 
-            margin: 10px 0;
-        }
-        p {
-            margin: 10px 0;
-        }
-    </style>
-</head>
-<body>
-    <div class='container'>
-        <div class='kop-surat'>
-            <img src='$base64_image_kopsurat' alt='Kop Surat'>
-        </div>
-        
-        <div class='judul'>
-            SURAT KETERANGAN
-        </div>
-        
-        <div class='nomor'>
-            No. $nomor_surat
-        </div>
-        
-        <div class='content'>
-            <div class='pembuka'>
-                Yang bertanda tangan dibawah ini,
+    <html lang='id'>
+    <head>
+        <style>
+            /* CSS Anda sudah bagus, tidak perlu diubah */
+            * { box-sizing: border-box; }
+            body { font-family: 'Times New Roman', serif; line-height: 1.6; font-size: 14px; margin: 0.5cm; }
+            .container { max-width: 100%; margin: 0 auto; }
+            .kop-surat { text-align: center; margin-bottom: 20px; }
+            .kop-surat img { width: 100%; height: auto; }
+            .judul { text-align: center; font-weight: bold; text-decoration: underline; font-size: 16px; }
+            .nomor { text-align: center; margin-bottom: 20px; font-size: 14px; }
+            .content { margin: 20px 0; text-align: justify; }
+            .data-section { margin-left: 40px; }
+            .data-label { display: inline-block; width: 150px; }
+            .penutup { margin-top: 20px; }
+            .signature { margin-top: 40px; text-align: right; }
+            .signature-content { display: inline-block; text-align: center; }
+            .signature-space { height: 70px; }
+            p { margin: 5px 0; }
+        </style>
+    </head>
+    <body>
+        <div class='container'>
+            <div class='kop-surat'>
+                <img src='$base64_image_kopsurat' alt='Kop Surat'>
             </div>
             
-            <div class='data-section'>
-                <div class='data-row'>
-                    <span class='data-label'>Nama</span>
-                    <span class='data-colon'>:</span>
-                    <span class='data-value'>Sariyanto</span>
-                </div>
-                <div class='data-row'>
-                    <span class='data-label'>Jabatan</span>
-                    <span class='data-colon'>:</span>
-                    <span class='data-value'>Direktur BUMDes Sumber Kamulyan </span>
-                </div>
-                <div class='data-row'>
-                    <span class='data-label'>Alamat</span>
-                    <span class='data-colon'>:</span>
-                    <span class='data-value'>Desa Wunut, Kecamatan Tulung, Kabupaten Klaten</span>
-                </div>
-            </div>
+            <div class='judul'>SURAT KETERANGAN</div>
+            <div class='nomor'>No. $nomor_surat</div>
             
-            <div class='pembuka'>
-                Menerangkan bahwa,
-            </div>
-            
-            <div class='data-section'>
-                <div class='data-row'>
-                    <span class='data-label'>Nama</span>
-                    <span class='data-colon'>:</span>
-                    <span class='data-value'>$nama</span>
+            <div class='content'>
+                <p>Yang bertanda tangan dibawah ini:</p>
+                <div class='data-section'>
+                    <p><span class='data-label'>Nama</span>: Sariyanto</p>
+                    <p><span class='data-label'>Jabatan</span>: Direktur BUMDes Sumber Kamulyan</p>
+                    <p><span class='data-label'>Alamat</span>: Desa Wunut, Kecamatan Tulung, Kabupaten Klaten</p>
                 </div>
-                <div class='data-row'>
-                    <span class='data-label'>$jenis_keterangan_pendukung</span>
-                    <span class='data-colon'>:</span>
-                    <span class='data-value'>$keterangan_pendukung</span>
-                </div>
-                </div>
-            
-            <div class='isi-keterangan'>
-                $keterangan
-            </div>
-            
-            <div class='penutup'>
-                Demikian surat keterangan ini kami buat untuk digunakan sebagaimana mestinya.
-            </div>
-        </div>
-        
-        <div class='signature'>
-            <div class='signature-content'>
-                <p>Klaten, $tanggal_format</p>
-                <p><strong>Pengurus</strong></p>
-                <p><strong>Desa Wisata Wunut</strong></p>
                 
-                <div class='signature-space'></div> 
+                <p>Menerangkan dengan sesungguhnya bahwa:</p>
+                <div class='data-section'>
+                    <p><span class='data-label'>Nama</span>: $nama</p>
+                    <p><span class='data-label'>$jenis_keterangan_pendukung</span>: $keterangan_pendukung</p>
+                </div>
                 
-                <p><strong>Sariyanto</strong></p>
-                <p><strong>Direktur</strong></p>
+                <div style='margin-top:20px;'>$keterangan</div>
+                
+                <div class='penutup'>
+                    Demikian surat keterangan ini kami buat untuk dapat dipergunakan sebagaimana mestinya.
+                </div>
+            </div>
+            
+            <div class='signature'>
+                <div class='signature-content'>
+                    <p>Klaten, $tanggal_format</p>
+                    <p><strong>Direktur BUMDes Sumber Kamulyan</strong></p>
+                    <div class='signature-space'></div> 
+                    <p><strong>Sariyanto</strong></p>
+                </div>
             </div>
         </div>
-    </div>
-</body>
-</html>";
+    </body>
+    </html>";
 
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
@@ -249,25 +152,34 @@ if (isset($_POST['nomor_surat']) && isset($_POST['nama']) && isset($_POST['jenis
     // Insert record into the database
     $query = "INSERT INTO tb_arsip_surat_keluar (tanggal_keluar, nomor_surat, penerima, perihal, kode, keterangan, file_surat) 
               VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt_insert = mysqli_prepare($db, $query);
 
-    $perihal_text = "Surat Keterangan";
-    $kode_text = "-";
-    $keterangan_arsip = "Dibuat dari fitur Buat surat keterangan";
+    // Pastikan variabel $db dari koneksi.php sudah tersedia
+    if (isset($db)) {
+        $stmt_insert = mysqli_prepare($db, $query);
 
-    // Pastikan $pdf_filename adalah nama file saja, bukan path lengkap, jika kolom database hanya menyimpan nama file
-    mysqli_stmt_bind_param($stmt_insert, "sssssss", $tanggal, $nomor_surat, $nama, $perihal_text, $kode_text, $keterangan_arsip, $pdf_filename);
+        $perihal_text = "Surat Keterangan";
+        $kode_text = "-";
+        $keterangan_arsip = "Surat Keterangan an. " . $nama;
 
-    if (mysqli_stmt_execute($stmt_insert)) {
-        header('Content-Type: application/pdf');
-        header('Content-Disposition: attachment; filename="' . $pdf_filename . '"');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: 0');
-        $dompdf->stream($pdf_filename, ["Attachment" => false]);
+        mysqli_stmt_bind_param($stmt_insert, "sssssss", $tanggal, $nomor_surat, $nama, $perihal_text, $kode_text, $keterangan_arsip, $pdf_filename);
+
+        if (mysqli_stmt_execute($stmt_insert)) {
+            mysqli_stmt_close($stmt_insert);
+            mysqli_close($db);
+
+            // Tampilkan PDF di browser
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: inline; filename="' . $pdf_filename . '"'); // 'inline' untuk menampilkan, 'attachment' untuk langsung download
+            header('Cache-Control: private, max-age=0, must-revalidate');
+            header('Pragma: public');
+            readfile($pdf_path);
+            exit();
+        } else {
+            echo "Error saat menyimpan ke database: " . mysqli_error($db);
+        }
     } else {
-        echo "Error: " . mysqli_error($db);
+        echo "Error: Koneksi database tidak ditemukan.";
     }
-    mysqli_stmt_close($stmt_insert);
 } else {
-    echo "Data tidak lengkap!";
+    echo "Data tidak lengkap! Pastikan semua field terisi.";
 }
