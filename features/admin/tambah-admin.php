@@ -2,9 +2,8 @@
 session_start();
 require_once '../../koneksi.php';
 
-
 $pageTitle = "Tambah Admin Baru";
-// $activeMenu = "kelola_admin"; // Sesuaikan dengan menu Anda
+// $activeMenu = "kelola_admin"; 
 ?>
 
 <?php include '../../partials/header.php'; ?>
@@ -17,7 +16,8 @@ $pageTitle = "Tambah Admin Baru";
                 <div class="card-title">Form Tambah Admin Baru</div>
             </div>
             <div class="card-body">
-                <form action="/features/admin/proses/proses-tambah-admin.php" method="post">
+                <!-- tambahkan enctype untuk upload file -->
+                <form action="/features/admin/proses/proses-tambah-admin.php" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                         <label for="nama_admin">Nama Lengkap</label>
                         <input type="text" name="nama_admin" id="nama_admin" class="form-control" required>
@@ -30,12 +30,16 @@ $pageTitle = "Tambah Admin Baru";
                         <label for="password">Password</label>
                         <input type="password" name="password" id="password" class="form-control" required>
                     </div>
-                </div>
-                <div class="card-action">
-                    <button type="submit" name="submit" class="btn btn-success">Simpan Admin</button>
-                    <a href="data-admin.php" class="btn btn-danger">Batal</a>
-                </div>
-            </form>
+                    <div class="form-group">
+                        <label for="gambar">Foto Profil</label>
+                        <input type="file" name="gambar" id="gambar" class="form-control" accept="image/*">
+                    </div>
+                    <div class="card-action">
+                        <button type="submit" name="submit" class="btn btn-success">Simpan Admin</button>
+                        <a href="data-admin.php" class="btn btn-danger">Batal</a>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

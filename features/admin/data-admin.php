@@ -53,15 +53,15 @@ $activeMenu = "kelola_admin"; // Sesuaikan dengan menu Anda
                                     <td><?= htmlspecialchars($data['id_admin']) ?></td>
                                     <td>
                                         <?php if(!empty($data['gambar'])): ?>
-                                            <img src="../../../uploads/profile/<?= htmlspecialchars($data['gambar']) ?>" alt="Foto Profil" width="50" class="rounded-circle">
+                                            <img src="../uploads/profile/<?= htmlspecialchars($data['gambar']) ?>" alt="Foto Profil" width="50" class="rounded-circle">
                                         <?php endif; ?>
                                     </td>
                                     <td><?= htmlspecialchars($data['nama_admin']) ?></td>
                                     <td><?= htmlspecialchars($data['username_admin']) ?></td>
                                     <td>
                                         <div class="form-button-action">
-                                            <a href="edit-admin.php?id=<?= $data['id_admin'] ?>" class="btn btn-link btn-primary" title="Edit"><i class="fa fa-edit"></i></a>
-                                            <a href="../../../proses/hapus_admin.php?id=<?= $data['id_admin'] ?>" onclick="return confirm('Anda yakin ingin menghapus admin ini?')" class="btn btn-link btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
+                                            <a href="../menu/profile/editprofile.php?id=<?= $data['id_admin'] ?>" class="btn btn-link btn-primary" title="Edit"><i class="fa fa-edit"></i></a>
+                                            <a href="/features/admin/proses/proses-hapus-admin.php?id=<?= $data['id_admin'] ?>" onclick="return confirm('Anda yakin ingin menghapus admin ini?')" class="btn btn-link btn-danger" title="Hapus"><i class="fa fa-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>

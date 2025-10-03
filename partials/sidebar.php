@@ -53,8 +53,9 @@ if (isset($db) && isset($_SESSION['id'])) {
     }
 
     .sidebar.sidebar-minimize .user .info {
-        display: none; /* sembunyikan teks biar rapi */
-        
+        display: none;
+        /* sembunyikan teks biar rapi */
+
     }
 </style>
 
@@ -200,6 +201,7 @@ if (isset($db) && isset($_SESSION['id'])) {
                                 <li>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="/auth/proses_logout.php" onclick="return confirm('Apakah Anda yakin ingin keluar?')">Logout</a>
+                                    <a class="dropdown-item" href="/features/admin/data-admin.php">Kelola User</a>
                                 </li>
                             </div>
                         </ul>
